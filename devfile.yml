@@ -42,5 +42,5 @@ commands:
       group:
         kind: run
       label: Run the application
-      workingDir: '${PROJECTS_ROOT}/python-hello-world' # added for testing
+      workingDir: '${PROJECTS_ROOT}/python-hello-world-test' # added for testing
     id: run
