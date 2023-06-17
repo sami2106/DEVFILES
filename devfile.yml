@@ -1,6 +1,6 @@
 schemaVersion: 2.1.0
 metadata:
-  name: python-hello-world
+  name: python-hello-world-from-myGitHub
   namespace: admin-devspaces-pm7lg5
 attributes:
   controller.devfile.io/devworkspace-config:
