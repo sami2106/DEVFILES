@@ -87,10 +87,10 @@ components:
       #    path: /home/user/.venv
       #  - name: checode
       #    path: /checode
-    name: python
-  - name: venv
-    volume:
-      size: 1G
+   # name: python
+  #- name: venv
+  #  volume:
+  #    size: 1G
 commands:
   - exec:
       commandLine: python -m venv .venv && . .venv/bin/activate && python hello-world.py
