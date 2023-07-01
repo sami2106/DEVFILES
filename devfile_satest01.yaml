@@ -1,25 +1,57 @@
-schemaVersion: 2.1.0
+schemaVersion: 2.2.0
 metadata:
-  name: python-sa01
+  name: python
+  projectType: Python
+  displayName: Python
+  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/python.svg
+  description:
+    'Python is an interpreted, object-oriented, high-level programming language with dynamic semantics.
+    Its high-level built in data structures, combined with dynamic typing and dynamic binding, make it very attractive for Rapid Application Development, as well as for use as a scripting or glue language to connect existing components together.'
+  language: Python
+  version: 1.0.1
+  provider: Red Hat
+  tags:
+    - Python
+    - Pip
+    - Flask
+  supportUrl: https://github.com/devfile-samples/devfile-support#support-information
+  attributes:
+    alpha.dockerimage-port: 8081
+parent:
+  id: python
+  registryUrl: 'https://registry.devfile.io'
 components:
-  - name: python
-    container:
-      #image: docker.io/sami2106/my-image-small:latet #registry.redhat.io/devspaces/udi-rhel8:3.5
-      image: linux91.local:8445/sami2106/my-image-small:latest
-      volumeMounts:
-        - name: venv
-          path: /home/user/.venv
-      memoryLimit: 2G
-      mountSources: true
-  - name: venv
-    volume:
-      size: 1G
+  - name: image-build
+    image:
+      imageName: python-image:latest
+      dockerfile:
+        uri: docker/Dockerfile
+        buildContext: .
+        rootRequired: false
+  - name: kubernetes-deploy
+    attributes:
+      deployment/replicas: 1
+      deployment/cpuRequest: 10m
+      deployment/memoryRequest: 50Mi
+      deployment/container-port: 8081
+    kubernetes:
+      uri: deploy.yaml
+      endpoints:
+      - name: http-8081
+        targetPort: 8081
+        path: /
 commands:
-  - id: run
-    exec:
-      label: "Run the application"
-      component: python
-      workingDir: ${PROJECTS_ROOT}/python-hello-world
-      commandLine: python -m venv .venv && . .venv/bin/activate && python hello-world.py
+  - id: build-image
+    apply:
+      component: image-build
+  - id: deployk8s
+    apply:
+      component: kubernetes-deploy
+  - id: deploy
+    composite:
+      commands:
+        - build-image
+        - deployk8s
       group:
-        kind: run
+        kind: deploy
+        isDefault: true
