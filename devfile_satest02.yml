@@ -1,6 +1,6 @@
 apiVersion: 1.0.0
 metadata:
-  generateName: hs3-
+  name: testmanuel
 #projects:
  # - name: hs3_synthetische_daten
   #  source:
