@@ -1,6 +1,6 @@
 schemaVersion: 2.1.0
 metadata:
-  name: python-from-mygithub
+  name: mygithub
   #namespace: admin-devspaces-pm7lg5
 attributes:
   controller.devfile.io/devworkspace-config:
