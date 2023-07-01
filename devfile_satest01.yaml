@@ -78,15 +78,15 @@ components:
           value: 'https://open-vsx.org'
       #image: 'registry.redhat.io/devspaces/udi-rhel8@sha256:47f81ad1d1f256990976d43cc5a97a6342a1efe634d7865c793a0aef7f92fda4'
       image: docker.io/sami2106/mydevimage:lates
-      memoryLimit: 3.07G
-      memoryRequest: 256Mi
-      mountSources: true
-      sourceMapping: /projects
-      volumeMounts:
-        - name: venv
-          path: /home/user/.venv
-        - name: checode
-          path: /checode
+      #memoryLimit: 3.07G
+      #memoryRequest: 256Mi
+      #mountSources: true
+      #sourceMapping: /projects
+      #volumeMounts:
+      #  - name: venv
+      #    path: /home/user/.venv
+      #  - name: checode
+      #    path: /checode
     name: python
   - name: venv
     volume:
