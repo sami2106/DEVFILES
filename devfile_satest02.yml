@@ -1,35 +1,48 @@
-apiVersion: 1.0.0
+schemaVersion: <version>
 metadata:
-  name: testmanuel
-#projects:
- # - name: hs3_synthetische_daten
-  #  source:
-   #   type: git
-    #  location: 'https://kissdev1.itz.cloud.intranet.bund.de/scm/repo/Kiss/Synthetische_Daten'
-     # branch: main
+  name: web-service
+  version: 1.0.0
+  description: A web service template.
+  projectType: Go
+  language: Go
+  provider: Red Hat
+  tags: [ 'Go', 'Gin', 'pq' ]
+  architectures: [ 'amd64' ]
+  displayName: Simple Web Service
+  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/golang.svg
 components:
-  - type: cheEditor
-    alias: theia-editor
-    id: eclipse/che-theia/latest
-    memoryLimit: 1Gi
-  - type: chePlugin
-    id: ms-python/python/latest
-    preferences:
-      python.globalModuleInstallation: true
-  - mountSources: true
-    referenceContent: |
-      apiVersion: v1
-      kind: Pod
-      metadata:
-        name: python
-      spec:
-        containers:
-          - name: python
-            image: docker.io/sami2106/my-image-small:latest
-            resources:
-              limits:
-                memory: 4Gi
-    type: kubernetes
-    alias: python/python
-  - id: redhat/vscode-yaml/latest
-    type: chePlugin
+  - name: web
+    container:
+      endpoints:
+        - name: http
+          targetPort: 8080
+      env:
+        DATABASE_HOST: db.example.com
+        DATABASE_PORT: 5432
+        DATABASE_NAME: dev
+        DATABASE_USER: devuser
+        DATABASE_PASSWORD: devpassword
+      image: quay.io/devfile/golang:latest
+commands:
+  - id: build
+    exec:
+      commandLine: go build main.go
+      component: web
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+        isDefault: true
+  - id: run
+    exec:
+      commandLine: ./main
+      component: web
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: run
+        isDefault: true
+starterProjects:
+  - name: web-starter
+    description: A web service starting point.
+    git:
+      remotes:
+        origin: https://github.com/devfile-samples/devfile-stack-go.git
