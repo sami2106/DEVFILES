@@ -1,37 +1,94 @@
 schemaVersion: 2.1.0
 metadata:
-  name: python-hello-world
+  name: python-hello-world-from-mygithub
   namespace: admin-devspaces-pm7lg5
-#projects:
-#  - name: python-hello-world
-#    zip:
-#      location: 'http://devfile-registry.devspaces.svc:8080/resources/v2/python-hello-world.zip'
-components: []
-  - name: tools
+attributes:
+  controller.devfile.io/devworkspace-config:
+    name: devworkspace-config
+    namespace: devspaces
+  controller.devfile.io/storage-type: per-user
+projects:
+  - name: python-hello-world
+    zip:
+      location: 'http://devfile-registry.devspaces.svc:8080/resources/v2/python-hello-world.zip'
+components:
+  - attributes:
+      che-code.eclipse.org/contribute-cpuLimit: true
+      che-code.eclipse.org/contribute-cpuRequest: true
+      che-code.eclipse.org/contribute-endpoint/che-code: 3100
+      che-code.eclipse.org/contribute-endpoint/code-redirect-1: 13131
+      che-code.eclipse.org/contribute-endpoint/code-redirect-2: 13132
+      che-code.eclipse.org/contribute-endpoint/code-redirect-3: 13133
+      che-code.eclipse.org/contribute-entry-point: true
+      che-code.eclipse.org/contribute-memoryLimit: true
+      che-code.eclipse.org/contribute-memoryRequest: true
+      che-code.eclipse.org/contribute-volume-mount/checode: /checode
+      che-code.eclipse.org/contributed-container: python
+      che-code.eclipse.org/original-memoryLimit: 2G
+      controller.devfile.io/merge-contribution: true
     container:
-      #env: 
-      #  - name: USE_JAVA17
-      #    value: 'true'
-      #  - name: JAVA_HOME
-      #    value: /usr/lib/jvm/java-17-openjdk-17.0.6.0.10-3.el8_7.x86_64     
-      #image: registry.redhat.io/devspaces/udi-rhel8@sha256:99ff1b5c541855e4cf368816c4bcdcdc86d32304023f72c4443213a4032ef05b
-      image: docker.io/sami2106/mydevimage:latest
-      mountSources: true
-      memoryLimit: 4Gi
+      command:
+        - /checode/entrypoint-volume.sh
+      cpuLimit: 500m
+      cpuRequest: 30m
       endpoints:
-        - exposure: none
-          name: debug
-          protocol: tcp
-          targetPort: 5005
-        - exposure: public
-          name: kissapi
+        - attributes:
+            contributed-by: che-code.eclipse.org
+            cookiesAuthEnabled: true
+            discoverable: false
+            type: main
+            urlRewriteSupported: true
+          exposure: public
+          name: che-code
+          protocol: https
+          secure: false
+          targetPort: 3100
+        - attributes:
+            contributed-by: che-code.eclipse.org
+            discoverable: false
+            urlRewriteSupported: false
+          exposure: public
+          name: code-redirect-1
           protocol: http
-          targetPort: 3000
-          path: /api 
+          targetPort: 13131
+        - attributes:
+            contributed-by: che-code.eclipse.org
+            discoverable: false
+            urlRewriteSupported: false
+          exposure: public
+          name: code-redirect-2
+          protocol: http
+          targetPort: 13132
+        - attributes:
+            contributed-by: che-code.eclipse.org
+            discoverable: false
+            urlRewriteSupported: false
+          exposure: public
+          name: code-redirect-3
+          protocol: http
+          targetPort: 13133
+      env:
+        - name: CHE_DASHBOARD_URL
+          value: 'https://devspaces.apps.sno-111-81.local.com'
+        - name: CHE_PLUGIN_REGISTRY_URL
+          value: 'https://devspaces.apps.sno-111-81.local.com/plugin-registry/v3'
+        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
+          value: 'http://plugin-registry.devspaces.svc:8080/v3'
+        - name: OPENVSX_REGISTRY_URL
+          value: 'https://open-vsx.org'
+      #image: 'registry.redhat.io/devspaces/udi-rhel8@sha256:47f81ad1d1f256990976d43cc5a97a6342a1efe634d7865c793a0aef7f92fda4'
+      image: docker.io/sami2106/mydevimage:lates
+      memoryLimit: 3.07G
+      memoryRequest: 256Mi
+      mountSources: true
+      sourceMapping: /projects
       volumeMounts:
-        - name: m2
-          path: /home/user/.m2
-  - name: m2
+        - name: venv
+          path: /home/user/.venv
+        - name: checode
+          path: /checode
+    name: python
+  - name: venv
     volume:
       size: 1G
 commands:
@@ -41,5 +98,5 @@ commands:
       group:
         kind: run
       label: Run the application
-      workingDir: '${PROJECTS_ROOT}/python-hello-world'
+      workingDir: '${PROJECTS_ROOT}/python-hello-world-test'
     id: run
