@@ -1,6 +1,6 @@
 schemaVersion: 2.1.0
 metadata:
-  name: python-hello-world-from-mygithub
+  name: python-from-mygithub
   namespace: admin-devspaces-pm7lg5
 attributes:
   controller.devfile.io/devworkspace-config:
@@ -8,7 +8,7 @@ attributes:
     namespace: devspaces
   controller.devfile.io/storage-type: per-user
 projects:
-  - name: python-hello-world
+  - name: python-myproject
     zip:
       location: 'http://devfile-registry.devspaces.svc:8080/resources/v2/python-hello-world.zip'
 components:
