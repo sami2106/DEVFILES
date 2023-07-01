@@ -1,53 +1,48 @@
-schemaVersion: 2.2.0
+schemaVersion: 2.1.0
 metadata:
-  name: go
-  displayName: Go Runtime
-  description: 'Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.'
-  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/golang.svg
-  language: Go
-  projectType: Go
-  tags:
-    - Go
-  version: 1.1.0
-  provider: Red Hat
-  supportUrl: https://github.com/devfile-samples/devfile-support#support-information
-  attributes:
-    alpha.dockerimage-port: 8081
-parent:
-  id: go
-  registryUrl: 'https://registry.devfile.io'
+  name: kiss-api-sa
+#projects:
+#  - name: kiss-api
+#    git:
+#      remotes:
+#        origin: 'https://bmf-kiss-gui.cloud.itz.in.bund.de/scm/repo/Kiss/Kiss-Api' 
+#      checkoutFrom:
+#        revision: main
 components:
-  - name: image-build
-    image:
-      imageName: go-image:latest
-      dockerfile:
-        uri: docker/Dockerfile
-        buildContext: .
-        rootRequired: false
-  - name: kubernetes-deploy
-    attributes:
-      deployment/replicas: 1
-      deployment/cpuRequest: 10m
-      deployment/memoryRequest: 10Mi
-      deployment/container-port: 8081
-    kubernetes:
-      uri: deploy.yaml
+  - name: tools
+    container:
+      env: 
+        - name: USE_JAVA17
+          value: 'true'
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-17-openjdk-17.0.6.0.10-3.el8_7.x86_64     
+      #image: registry.redhat.io/devspaces/udi-rhel8@sha256:99ff1b5c541855e4cf368816c4bcdcdc86d32304023f72c4443213a4032ef05b
+      #image: docker.io/sami2106/my-image-small:latest
+      image: linux91.local:8445/sami2106/my-image-small:latest
+      mountSources: true
+      memoryLimit: 4Gi
       endpoints:
-      - name: http-8081
-        targetPort: 8081
-        path: /
+        - exposure: none
+          name: debug
+          protocol: tcp
+          targetPort: 5005
+        - exposure: public
+          name: kissapi
+          protocol: http
+          targetPort: 3000
+          path: /api 
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+  - name: m2
+    volume:
+      size: 1G
 commands:
-  - id: build-image
-    apply:
-      component: image-build
-  - id: deployk8s
-    apply:
-      component: kubernetes-deploy
-  - id: deploy
-    composite:
-      commands:
-        - build-image
-        - deployk8s
+  - id: build
+    exec:
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/kiss-api
+      commandLine: mvn clean install
       group:
-        kind: deploy
+        kind: build
         isDefault: true
