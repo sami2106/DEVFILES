@@ -4,7 +4,8 @@ metadata:
 components:
   - name: python
     container:
-      image: docker.io/sami2106/my-image-small:latet #registry.redhat.io/devspaces/udi-rhel8:3.5
+      #image: docker.io/sami2106/my-image-small:latet #registry.redhat.io/devspaces/udi-rhel8:3.5
+      image: linux91.local:8445/sami2106/my-image-small:latest
       volumeMounts:
         - name: venv
           path: /home/user/.venv
