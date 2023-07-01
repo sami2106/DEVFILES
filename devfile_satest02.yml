@@ -25,16 +25,10 @@ components:
       spec:
         containers:
           - name: python
-            #image: craas-mvp.bcsv.cloud.intranet.bund.de/bmf-kiss/python-hs3:latest
             image: docker.io/sami2106/my-image-small:latest
             resources:
               limits:
                 memory: 4Gi
-                # nvidia.com/gpu: 1 # limiting to 1 GPU
-              # requests:
-                # nvidia.com/gpu: 1 # requesting 1 GPU
-        # nodeSelector:
-          # nvidia.com/gpu.present: true
     type: kubernetes
     alias: python/python
   - id: redhat/vscode-yaml/latest
