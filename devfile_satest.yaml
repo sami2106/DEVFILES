@@ -17,7 +17,7 @@ components:
         - name: JAVA_HOME
           value: /usr/lib/jvm/java-17-openjdk-17.0.6.0.10-3.el8_7.x86_64     
       #image: registry.redhat.io/devspaces/udi-rhel8@sha256:99ff1b5c541855e4cf368816c4bcdcdc86d32304023f72c4443213a4032ef05b
-      image: docker.io/sami2106/my-image-min:latest
+      image: docker.io/sami2106/my-image-small:latest
       mountSources: true
       memoryLimit: 4Gi
       endpoints:
