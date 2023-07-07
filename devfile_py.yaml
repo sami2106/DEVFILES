@@ -10,7 +10,7 @@ components:
   - name: python
     container:
       #image: craas-mvp.bcsv.cloud.intranet.bund.de/bmf-kiss/python-devspaces:latest
-      image: docker.io/sami2106/my-image-py:latest
+      image: docker.io/sami2106/my-image-python:latest
       volumeMounts:
         - name: venv
           path: /home/user/.venv
