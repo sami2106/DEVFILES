@@ -9,7 +9,7 @@ metadata:
 components:
   - name: python
     container:
-      image: docker.io/sami2106/my-image-py:latest
+      image: docker.io/sami2106/my-image-py:3.0
       #image: craas-mvp.bcsv.cloud.intranet.bund.de/bmf-kiss/python-devspaces:latest
       volumeMounts:
         - name: venv
