@@ -1,0 +1,25 @@
+schemaVersion: 2.1.0
+metadata:
+  name: python-sa-docker
+components:
+  - name: python
+    container:
+      #image: craas-mvp.bcsv.cloud.intranet.bund.de/bmf-kiss/python-devspaces:latest
+      image: docker.io/sami2106/image_docker:latest
+      volumeMounts:
+        - name: venv
+          path: /home/user/.venv
+      memoryLimit: 2G
+      mountSources: true
+  - name: venv
+    volume:
+      size: 1G
+commands:
+  - id: run
+    exec:
+      label: "Run the application"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/python
+      commandLine: python -m venv .venv && . .venv/bin/activate 
+      group:
+        kind: run
