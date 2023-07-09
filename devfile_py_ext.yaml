@@ -5,7 +5,7 @@ metadata:
 #  - name: python
 #    zip:
 #       location: 'https://linux91.local:8441/repository/files/files/extensions.zip'
-      #location: 'https://bmf-kiss-gui.cloud.itz.in.bund.de/nexus/repository/devfiles/devspaces/python-cuda/python-cuda.zip'  
+      #location: 'https://bmf-kissd-gui.cloud.itz.in.bund.de/nexus/repository/devfiles/devspaces/python-cuda/python-cuda.zip'  
 components:
   - name: python
     container:
