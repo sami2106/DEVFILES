@@ -1,4 +1,4 @@
-schemaVersion: 2.2.0
+schemaVersion: 2.2.0 #text for TEST branch
 metadata:
 name: tutorial-stack
 displayName: Tutorial Stack
