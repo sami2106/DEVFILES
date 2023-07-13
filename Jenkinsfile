@@ -13,9 +13,9 @@ pipeline {
         
       }
     }
-    stage('I am Deploying now') {
+    stage('Deploying') {
       steps {
-        echo "deploying"        
+        echo "I am deploying now"        
       }
     }
   }
