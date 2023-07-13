@@ -1,5 +1,5 @@
 schemaVersion: 2.2.0  # test text from local VS-Code
-metadata: # text on Thursday evenning
+metadata: # text on Thursday evenning via windows cmd
 name: tutorial-stack
 displayName: Tutorial Stack
 description: Test stack based on .Net 6.0
