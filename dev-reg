@@ -1,57 +1,51 @@
 schemaVersion: 2.2.0
 metadata:
-  name: python
-  projectType: Python
-  displayName: Python
-  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/python.svg
-  description:
-    'Python is an interpreted, object-oriented, high-level programming language with dynamic semantics.
-    Its high-level built in data structures, combined with dynamic typing and dynamic binding, make it very attractive for Rapid Application Development, as well as for use as a scripting or glue language to connect existing components together.'
-  language: Python
-  version: 1.0.1
-  provider: Red Hat
-  tags:
-    - Python
-    - Pip
-    - Flask
-  supportUrl: https://github.com/devfile-samples/devfile-support#support-information
-  attributes:
-    alpha.dockerimage-port: 8081
-parent:
-  id: python
-  registryUrl: 'https://registry.devfile.io'
+  name: python-hello-world-extern
+  namespace: admin-devspaces-g1vfhy
+attributes:
+  controller.devfile.io/devworkspace-config:
+    name: devworkspace-config
+    namespace: devspaces
+  controller.devfile.io/scc: container-build
+  controller.devfile.io/storage-type: per-user
+#projects:
+#  - name: python-hello-world
+#    zip:
+#      location: http://devfile-registry.devspaces.svc:8080/resources/v2/python-hello-world.zip
 components:
-  - name: image-build
-    image:
-      imageName: python-image:latest
-      dockerfile:
-        uri: docker/Dockerfile
-        buildContext: .
-        rootRequired: false
-  - name: kubernetes-deploy
-    attributes:
-      deployment/replicas: 1
-      deployment/cpuRequest: 10m
-      deployment/memoryRequest: 50Mi
-      deployment/container-port: 8081
-    kubernetes:
-      uri: deploy.yaml
-      endpoints:
-      - name: http-8081
-        targetPort: 8081
-        path: /
+  - attributes:
+      controller.devfile.io/merge-contribution: true
+    container:
+      env:
+        - name: CHE_DASHBOARD_URL
+          value: https://devspaces.apps.sno-111-83.local.com
+        - name: CHE_PLUGIN_REGISTRY_URL
+          value: https://devspaces.apps.sno-111-83.local.com/plugin-registry/v3
+        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
+          value: http://plugin-registry.devspaces.svc:8080/v3
+        - name: CLUSTER_CONSOLE_URL
+          value: https://console-openshift-console.apps.sno-111-83.local.com
+        - name: CLUSTER_CONSOLE_TITLE
+          value: OpenShift console
+        - name: OPENVSX_REGISTRY_URL
+          value: ''
+      image: registry.redhat.io/devspaces/udi-rhel8@sha256:a5a67003870daf10f941b0279a065358dd1ace6d40826462b91bae9868216eff
+      memoryLimit: 2G
+      mountSources: true
+      sourceMapping: /projects
+      volumeMounts:
+        - name: venv
+          path: /home/user/.venv
+    name: python
+  - name: venv
+    volume:
+      size: 1G
 commands:
-  - id: build-image
-    apply:
-      component: image-build
-  - id: deployk8s
-    apply:
-      component: kubernetes-deploy
-  - id: deploy
-    composite:
-      commands:
-        - build-image
-        - deployk8s
+  - exec:
+      commandLine: python -m venv .venv && . .venv/bin/activate && python hello-world.py
+      component: python
       group:
-        kind: deploy
-        isDefault: true
+        kind: run
+      label: Run the application
+      workingDir: ${PROJECTS_ROOT}/python-hello-world
+    id: run
